@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Handling Example</title>
+</head>
+<body>
+    <h1>Posts from JSONPlaceholder API</h1>
+    <div id="errorMessage" style="color: red;"></div>
+    <ul id="postsList"></ul>
+    
+    <script>
+        function fetchData() {
+            fetch('https://jsonplaceholder.typicode.com/posts/123456789')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const postsList = document.getElementById('postsList');
+                    data.forEach(post => {
+                        const li = document.createElement('li');
+                        li.textContent = `${post.id}: ${post.title}`;
+                        postsList.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    const errorMessageElement = document.getElementById('errorMessage');
+                    errorMessageElement.textContent = error.message;
+                });
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
